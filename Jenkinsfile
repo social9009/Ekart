@@ -76,9 +76,11 @@ pipeline {
         stage('Push image to Hub'){
             steps{
                 script{
-                   withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
-                   sh 'docker login -u hitfast -p ${dockerhub-pwd2}'}
-                   sh 'docker push youngminds73/ekart:latest'
+                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'DOCKERHUB_PWD')]) {
+            sh '''
+              echo "${DOCKERHUB_PWD}" | docker login -u hitfast --password-stdin
+              docker push youngminds73/ekart:latest
+            '''
                 }
             }
         }
